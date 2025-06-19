@@ -50,6 +50,7 @@ public class MainAppDemo
         publisher.subscribe(subscriber);
     }
 
+    // for getting no more data to send and completing the subscription
     public static void demo2() throws InterruptedException{
         var publisher = new PublisherImpl();
         var subscriber = new SubscriberImpl();
@@ -79,6 +80,7 @@ public class MainAppDemo
         subscriber.getSubscription().request(3);
     }
 
+    // for canceling the subscription by subscriber in between
     private static void demo3() throws InterruptedException {
         var publisher = new PublisherImpl();
         var subscriber = new SubscriberImpl();
@@ -93,6 +95,7 @@ public class MainAppDemo
         Thread.sleep(Duration.ofSeconds(2));
     }
 
+    // for getting the error for max requested items
     private static void demo4() throws InterruptedException {
         var publisher = new PublisherImpl();
         var subscriber = new SubscriberImpl();
@@ -109,6 +112,4 @@ public class MainAppDemo
         subscriber.getSubscription().request(3);
         Thread.sleep(Duration.ofSeconds(2));
     }
-
-
 }
