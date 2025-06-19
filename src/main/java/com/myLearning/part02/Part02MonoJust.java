@@ -2,13 +2,17 @@ package com.myLearning.part02;
 
 import com.myLearning.part01.subscriber.SubscriberImpl;
 import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
 import reactor.core.publisher.Mono;
 
 public class Part02MonoJust {
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(Part02MonoJust.class);
     public static void main(String[] args) {
 
         Publisher<String> publisher = Mono.just("Hello");
-        System.out.println(publisher); //MonoJust
+        System.out.println(publisher); //MonoJust object
 
         var subscriber = new SubscriberImpl(); //adding the subscriber for which publisher will send the subscription
         publisher.subscribe(subscriber);
@@ -19,11 +23,34 @@ public class Part02MonoJust {
         subscriber.getSubscription().request(5);
         subscriber.getSubscription().cancel();
 
+        publisher.subscribe(new Subscriber(){
+            @Override
+            public void onSubscribe(Subscription subscription) {
+              subscription.request(5);
+            }
+
+            @Override
+            public void onNext(Object o) {
+              logger.info("Received {}", o);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+               logger.error(t.getMessage(), t);
+            }
+
+            @Override
+            public void onComplete() {
+                logger.info("Completed");
+            }
+        });
+
 
         Mono<String> mono = Mono.just("Hello");
         System.out.println(mono); // MonoJust
 
-        mono.subscribe(System.out::println);
+        mono.subscribe(System.out::println); // Subscribes and automatically requests; onComplete is called internally, but not printed since no onComplete handler is provided
+
     }
 }
 
