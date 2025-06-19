@@ -1,4 +1,4 @@
-package com.myLearning;
+package com.myLearning.part01;
 
 /*
    Rules of Reactive Streams
