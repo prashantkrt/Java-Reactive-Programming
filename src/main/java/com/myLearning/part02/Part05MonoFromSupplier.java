@@ -1,10 +1,12 @@
 package com.myLearning.part02;
 
+import com.myLearning.part02.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalTime;
+import java.util.List;
 
 /*
  * public static <T> Mono<T> fromSupplier(Supplier<? extends T> supplier)
@@ -14,10 +16,10 @@ import java.time.LocalTime;
  * - Utilize a Supplier<T> functional interface from Java.
  *
  *  @FunctionalInterface
-*   public interface Supplier<T> {
-*    T get();  // no input, returns something
-*   }
-*/
+ *   public interface Supplier<T> {
+ *    T get();  // no input, returns something
+ *   }
+ */
 public class Part05MonoFromSupplier {
 
     private static final Logger logger = LoggerFactory.getLogger(Part05MonoFromSupplier.class);
@@ -40,5 +42,18 @@ public class Part05MonoFromSupplier {
         mono.subscribe(value -> System.out.println("Lazy subscriber received: " + value));
         monoEager.subscribe(value -> System.out.println("Eager Subscriber received: " + value));
 
+        //example 2
+        List<Integer> list = List.of(1, 2, 3);
+        //first let know about the problem with Mono.just()
+        Mono<Integer> eagerMono = Mono.just(sum(list)); // will call the sum method eagerly
+
+        //with Mono.fromSupplier() we can solve this
+        Mono.fromSupplier(() -> sum(list)) // will call the sum when subscribed/needed
+                .subscribe(Util.getSubscriber());
+    }
+
+    private static int sum(List<Integer> list) {
+        logger.info("finding the sum of {}", list);
+        return list.stream().mapToInt(a -> a).sum();
     }
 }
