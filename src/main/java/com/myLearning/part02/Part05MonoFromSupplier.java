@@ -9,6 +9,10 @@ import java.time.LocalTime;
 import java.util.List;
 
 /*
+ * To delay the execution using supplier / callable
+ */
+
+/*
  * public static <T> Mono<T> fromSupplier(Supplier<? extends T> supplier)
  * Mono.fromSupplier() creates a Mono<T> that:
  * - Does not execute the logic immediately.
