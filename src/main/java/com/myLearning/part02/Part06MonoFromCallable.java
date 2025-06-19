@@ -1,10 +1,12 @@
 package com.myLearning.part02;
 
+import com.myLearning.part02.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Callable;
 /*
  * To delay the execution using supplier / callable
@@ -27,7 +29,7 @@ public interface Supplier<T> {
 }
 Supplier<String> supplier = () -> {
     if (true) throw new RuntimeException("Something went wrong"); // ✅ OK  Can throw unchecked exceptions (RuntimeException)
-    // if (true) throw new IOException("IO Failed"); // ❌ Compile error ❌ Cannot throw checked exceptions directly (compiler error)
+    // if (true) throw new IOException("IO Failed"); // ❌ Compile error since it Cannot throw checked exceptions directly (compiler error)
     return "data";
 };
 
@@ -85,6 +87,29 @@ public class Part06MonoFromCallable {
                 () -> System.out.println("onComplete")
         );
 
+
+        // example 2, both are lazy loading but supplier does not throw exception checked exception like callable
+
+        var list = List.of(1, 2, 3);
+        //in supplier, we cannot throw checked exception so have to handle it else it gonna give complier error
+        Mono.fromSupplier(() -> {
+                    try {
+                        return sum(list);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .subscribe(Util.getSubscriber());
+
+        // Should use Callable since sum() throws exception
+        Mono.fromCallable(() -> sum(list))
+                .subscribe(Util.getSubscriber());
+
+    }
+
+    private static int sum(List<Integer> list) throws Exception {
+        logger.info("finding the sum of {}", list);
+        return list.stream().mapToInt(a -> a).sum();
     }
 
 }
