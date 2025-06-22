@@ -1,7 +1,10 @@
 package com.myLearning.part02.common;
 
+import com.github.javafaker.Faker;
 import org.reactivestreams.Subscriber;
 import reactor.core.publisher.Mono;
+
+import java.util.Random;
 
 public class Util {
 
@@ -10,6 +13,12 @@ public class Util {
     }
     public static <T> Subscriber<T> getSubscriber(String name) {
         return new DefaultSubscriber<>(name);
+    }
+
+    private static final Faker faker = Faker.instance();
+
+    public static Faker getFaker() {
+        return faker;
     }
 
     public static void main(String[] args) {
