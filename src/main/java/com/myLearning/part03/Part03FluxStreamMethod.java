@@ -13,6 +13,30 @@ import java.util.function.Function;
 public class Part03FluxStreamMethod {
     public static void main(String[] args) {
 
+
+        /*
+         * Java Stream           | Reactor Flux
+         * ----------------------|--------------------------------------
+         * stream.forEach(...)   | flux.subscribe(...)`
+         * Synchronous iteration | Asynchronous event-driven subscription
+         * Processes all at once | Processes when data is available
+
+
+           Flux<Integer> flux = Flux.just(1, 2, 3, 4, 5);
+
+            flux.subscribe(
+                item -> System.out.println("Received: " + item),     // onNext
+                error -> System.err.println("Error: " + error),      // onError
+                () -> System.out.println("All items processed!")     // onComplete
+            );
+
+
+              and for stream, we have:
+              Stream<Integer> stream = Stream.of(1, 2, 3, 4, 5);
+              stream.forEach(System.out::println);
+
+         */
+
         Flux<Integer> flux = Flux.just(1, 2, 3, 4, 5, 6);
 
         //1. .filter(Predicate<T>)
