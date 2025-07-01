@@ -1,8 +1,9 @@
 package com.myLearning.part03;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;//Convert Mono<T> ➝ Flux<T>
+import reactor.core.publisher.Mono;
 
+// Convert Mono<T> ➝ Flux<T>
 // Convert Flux<T> ➝ Mono<T>
 public class Part11FluxToMono {
     public static void main(String[] args) {
@@ -13,7 +14,7 @@ public class Part11FluxToMono {
         stringMonoFromFlux.subscribe(s -> System.out.println("First string from flux: " + s));
 
         Flux<Integer> intFlux = Flux.just(10, 20, 30);
-        Mono<Integer>  stringMonoFromIntFlux = toMonoInteger(intFlux);
+        Mono<Integer> stringMonoFromIntFlux = toMonoInteger(intFlux);
         stringMonoFromIntFlux.subscribe(i -> System.out.println("First integer from flux: " + i));
 
         // Mono to Flux examples
@@ -26,7 +27,7 @@ public class Part11FluxToMono {
         intFluxFromMono.subscribe(i -> System.out.println("Mono to Flux (Integer): " + i));
 
 
-        //output
+        //Output:
         //First string from flux: Apple
         //First integer from flux: 10
         //Mono to Flux (String): Hello Mono
