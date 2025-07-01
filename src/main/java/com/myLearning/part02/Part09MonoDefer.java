@@ -63,10 +63,11 @@ public class Part09MonoDefer {
         monoA.subscribe((i)-> System.out.println(i),
                 err -> System.out.println(err),
                 () -> System.out.println("Completed"));
-        System.out.println("*******************************");
+
+        System.out.println("*******************************----");
 
         monoB.subscribe(Util.getSubscriber("B"));
-        System.out.println("*******************************");
+        System.out.println("*******************************----");
 
         monoC.subscribe(System.out::println,
                 System.out::println,
