@@ -27,11 +27,44 @@ public class Part11FluxToMono {
         intFluxFromMono.subscribe(i -> System.out.println("Mono to Flux (Integer): " + i));
 
 
+
         //Output:
         //First string from flux: Apple
         //First integer from flux: 10
         //Mono to Flux (String): Hello Mono
         //Mono to Flux (Integer): 99
+
+
+        //using from
+        /*
+         Mono<String> mono = Mono.just("Hello Mono");
+         Flux<String> flux = Flux.from(mono);
+         flux.subscribe(System.out::println);
+         // Output: Hello Mono
+
+         Flux<String> flux = Flux.just("A", "B", "C");
+         Mono<String> mono = Mono.from(flux);
+         mono.subscribe(System.out::println);
+         // Output: A
+
+         */
+
+        // Example Mono
+        Mono<String> mono = Mono.just("Hello from Mono");
+
+        // Example Flux
+        Flux<String> flux = Flux.just("A", "B", "C");
+
+        // Convert Mono to Flux
+        Flux<String> resultFlux = convertMonoToFluxUsingFrom(mono);
+        resultFlux.subscribe(val -> System.out.println("Flux value: " + val));
+        // Flux value: Hello from Mono
+
+        // Convert Flux to Mono
+        System.out.println("Flux to Mono using Mono.from():");
+        Mono<String> resultMono = convertFluxToMonoUsingFrom(flux);
+        resultMono.subscribe(val -> System.out.println("Mono value: " + val));
+        //Mono value: A
 
     }
 
@@ -65,6 +98,16 @@ public class Part11FluxToMono {
      */
     public static Flux<Integer> toFluxInteger(Mono<Integer> mono) {
         return mono.flux();  // Converts Mono into Flux for integer value
+    }
+
+    // Convert Mono<T> to Flux<T> using Flux.from()
+    public static <T> Flux<T> convertMonoToFluxUsingFrom(Mono<T> mono) {
+        return Flux.from(mono);
+    }
+
+    //  Convert Flux<T> to Mono<T> using Mono.from()
+    public static <T> Mono<T> convertFluxToMonoUsingFrom(Flux<T> flux) {
+        return Mono.from(flux);
     }
 }
 
