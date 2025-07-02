@@ -8,14 +8,14 @@ public class ExternalServiceClient extends AbstractHttpClient {
     public Flux<String> getNames() {
         return this.client.get()
                 .uri("/demo02/name/stream")
-                .responseContent()
-                .asString();
+                .responseContent() //ByteBufFlux
+                .asString(); //Flux<String>
     }
 
     public Flux<Integer> getPriceChanges() {
         return this.client.get()
                 .uri("/demo02/stock/stream")
-                .responseContent()
+                .responseContent()//ByteBufFlux
                 .asString()
                 .map(i -> Integer.parseInt(i));
     }
