@@ -35,7 +35,7 @@ public class Part11FluxToMono {
         //Mono to Flux (Integer): 99
 
 
-        //using from
+        //using from to convert Flux to Mono and Mono to Flux
         /*
          Mono<String> mono = Mono.just("Hello Mono");
          Flux<String> flux = Flux.from(mono);
