@@ -32,6 +32,7 @@ public class StockPriceObserver implements Subscriber<Integer> {
             balance = balance + (quantity * price);
             quantity=0;
             logger.info("Selling stock at price {} and getting profit {}", price,balance-1000);
+            subscription.cancel();
         }
     }
 
