@@ -1,5 +1,6 @@
 package com.myLearning.part04;
 
+import com.myLearning.part04.common.Util;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -25,7 +26,7 @@ public class Part01FluxCreate {
         dynamicFlux.subscribe(System.out::println);
 
 
-        Flux.create(new Consumer<FluxSink<String>>() {
+        Flux<String> stringFlux = Flux.create(new Consumer<FluxSink<String>>() {
             @Override
             public void accept(FluxSink<String> sink) {
                 sink.next("Event 1");
@@ -34,6 +35,16 @@ public class Part01FluxCreate {
                 sink.complete();
             }
         });
+        stringFlux.subscribe(System.out::println);
+
+        Flux.create(fluxSink -> {
+            String country = "United States";
+            while (!country.equalsIgnoreCase("canada")) {
+                country = Util.faker().country().name();
+                fluxSink.next(country);
+            }
+            fluxSink.complete();
+        }).subscribe(Util.getSubscriber("my subscriber"));
 
 
     }
