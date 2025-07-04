@@ -1,0 +1,49 @@
+package com.myLearning.part04;
+
+import com.myLearning.part01.subscriber.SubscriberImpl;
+import com.myLearning.part04.common.Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+
+public class Part05FluxCreateDownstreamEmitOnDemand {
+    private static final Logger logger = LoggerFactory.getLogger(Part05FluxCreateDownstreamEmitOnDemand.class);
+
+    public static void main(String[] args) {
+
+//        var subscriber1 = new SubscriberImpl();
+//        //example of early emit it is default behavior
+//        Flux.<String>create(fluxSink -> {
+//            for (int i = 0; i < 100 ; i++) {
+//                var name = Util.faker().name().firstName();
+//                logger.info("Generated name: {}", name); // will be logged immediately even we have cancelled the subscription
+//                fluxSink.next(name);
+//            }
+//            fluxSink.complete();
+//        }).subscribe(subscriber1);
+//
+//        subscriber1.getSubscription().request(1);
+//        subscriber1.getSubscription().cancel();
+
+
+        var subscriber2 = new SubscriberImpl();
+        //Produce items on demand
+        Flux.<String>create(fluxSink -> {
+            fluxSink.onRequest(n -> {
+                for (int i = 0; i < n; i++) {
+                    var name = Util.faker().name().firstName();
+                    logger.info("Generated name : {}", name); // will be logged immediately even we have cancelled the subscription
+                    fluxSink.next(name);
+                }
+                System.out.println(fluxSink.isCancelled());
+            });
+        }).subscribe(subscriber2);
+
+        subscriber2.getSubscription().request(2);
+        subscriber2.getSubscription().request(2);
+        subscriber2.getSubscription().request(1);
+        subscriber2.getSubscription().request(1);
+        subscriber2.getSubscription().cancel();
+        subscriber2.getSubscription().request(3);
+    }
+}

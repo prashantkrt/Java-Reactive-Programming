@@ -29,6 +29,9 @@ public class Part02FluxCreateRefactor {
         var nameFlux = Flux.create(nameGenerator);
 
         nameFlux.subscribe(Util.getSubscriber());
-        nameGenerator.generate();
+
+        for (int i = 0; i < 100; i++) {
+            nameGenerator.generate();
+        }
     }
 }
