@@ -5,7 +5,7 @@ import reactor.core.publisher.Flux;
 
 public class Part06TakeOperator {
     public static void main(String[] args) {
-       getData();
+       takeUntil();
     }
     private static void take(){
         Flux.range(1, 10)
@@ -24,7 +24,7 @@ public class Part06TakeOperator {
                 .subscribe(Util.getSubscriber());
     }
 
-    // 1 2 3 4 5
+    // 1
     private static void takeUntil() {
         Flux.range(1, 10)
                 .log("take")
