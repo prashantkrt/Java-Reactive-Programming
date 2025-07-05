@@ -30,12 +30,11 @@ public class Part05FluxCreateDownstreamEmitOnDemand {
         //Produce items on demand
         Flux.<String>create(fluxSink -> {
             fluxSink.onRequest(n -> {
-                for (int i = 0; i < n; i++) {
+                for (int i = 0; i < n &&  !fluxSink.isCancelled(); i++) {
                     var name = Util.faker().name().firstName();
                     logger.info("Generated name : {}", name); // will be logged immediately even we have cancelled the subscription
                     fluxSink.next(name);
                 }
-                System.out.println(fluxSink.isCancelled());
             });
         }).subscribe(subscriber2);
 
@@ -47,3 +46,34 @@ public class Part05FluxCreateDownstreamEmitOnDemand {
         subscriber2.getSubscription().request(3);
     }
 }
+
+/*
+FYI
+public interface FluxSink<T> {
+
+    // Emit a single item
+    FluxSink<T> next(T t);
+
+    // Signal that the stream is completed
+    void complete();
+
+    // Signal an error
+    void error(Throwable e);
+
+    // Optional: Request how many items the subscriber wants
+    FluxSink<T> onRequest(LongConsumer consumer);
+
+    // Optional: Set a cancellation callback
+    FluxSink<T> onCancel(Disposable d);
+
+    // Optional: Set a callback for termination (completion or error)
+    FluxSink<T> onDispose(Disposable d);
+
+    // Get the current requested demand
+    long requestedFromDownstream();
+
+    // Optional: Get the current FluxSink overflow strategy
+    OverflowStrategy getOverflowStrategy();
+}
+ */
+
