@@ -4,7 +4,7 @@ import com.myLearning.part04_emit_programmatically.common.Util;
 import reactor.core.publisher.Flux;
 
 // Filter + map
-public class part01Handle {
+public class Part01Handle {
     public static void main(String[] args) {
 
         //example 1
