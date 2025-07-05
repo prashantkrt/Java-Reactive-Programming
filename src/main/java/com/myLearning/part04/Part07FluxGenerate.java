@@ -11,11 +11,14 @@ public class Part07FluxGenerate {
 
     public static void main(String[] args) {
 
+//   Flux.generate method lazily produces the next value. The values are generated and emitted on demand
+
 //        ==> Will keep generating values <==
 //        Flux.generate(synchronousSink ->
 //                synchronousSink.next(1)
 //        ).subscribe(System.out::println);
 
+//        ==> one time only we can perform the next operation <==
 //        Flux.generate(synchronousSink -> {
 //                    synchronousSink.next(1);
 //                    synchronousSink.next(2); // will not allow
@@ -23,6 +26,14 @@ public class Part07FluxGenerate {
 //                }
 //        ).subscribe(System.out::println);
 
+
+        // Like we did earlier we were performing the loop on create method
+        // but with generate the loop is performed on demand from the publisher itself
+
+//         lets say
+//         Flux.generate(synchronousSink ->
+//                synchronousSink.next(1)
+//        ).subscribe(System.out::println);   it will keep generating values in an infinite loop
 
         // Use AtomicInteger for a mutable, thread-safe state
         AtomicInteger number = new AtomicInteger(1);
