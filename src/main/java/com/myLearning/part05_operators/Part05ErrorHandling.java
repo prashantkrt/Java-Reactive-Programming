@@ -1,9 +1,11 @@
 package com.myLearning.part05_operators;
 
+import com.myLearning.part04_emit_programmatically.common.Util;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -13,6 +15,62 @@ public class Part05ErrorHandling {
     private static final Logger log = LoggerFactory.getLogger(Part05ErrorHandling.class);
 
     public static void main(String[] args) {
+
+        // on error complete
+        // Takes: No parameters.
+        // Returns: A new Flux<T> that completes silently if any error occurs.
+
+        // in case of error, emit complete
+        Mono.just(1)
+                .onErrorComplete()
+                .subscribe(Util.getSubscriber());
+
+        System.out.println("----------------------------------");
+
+        //example 2
+        Flux<Integer> flux = Flux.range(1, 5)
+                .map(i -> {
+                    if (i == 3) throw new RuntimeException("Boom at 3");
+                    return i;
+                })
+                .onErrorComplete();
+
+        flux.subscribe(
+                data -> System.out.println("Received: " + data),
+                err -> System.err.println("Error: " + err),
+                () -> System.out.println("Completed")
+        );
+
+
+        System.out.println("----------------------------------");
+        //example 3 Predicate Parameter
+        /*
+         * @FunctionalInterface
+         * public interface Predicate<T> {
+         *     boolean test(T t);
+         * }
+         */
+        Flux<Integer> fluxInput = Flux.just(1, 2, 3)
+                .map(i -> {
+                    if (i == 2) throw new IllegalArgumentException("Invalid input");
+                    return i;
+                })
+                .onErrorComplete(ex -> ex instanceof IllegalArgumentException);  // condition
+        //.onErrorComplete(new Predicate<Throwable>() {
+        //                @Override
+        //                public boolean test(Throwable ex) {
+        //                    return ex instanceof IllegalArgumentException; // condition
+        //                }
+        //            });
+
+        fluxInput.subscribe(
+                System.out::println,
+                err -> System.err.println("Error: " + err),
+                () -> System.out.println("Completed")
+        );
+
+        System.out.println("************************************");
+
 
         // on error return
         // Parameter: A single fallback value (T) to emit when any error occurs.
@@ -28,7 +86,7 @@ public class Part05ErrorHandling {
         System.out.println("------------------------------------");
 
         //example 2
-        Flux<Integer> flux = Flux.range(1, 4)
+        Flux<Integer> fluxInteger = Flux.range(1, 4)
                 .map(i -> {
                     if (i == 3) {
                         throw new RuntimeException("Oops");
@@ -37,7 +95,20 @@ public class Part05ErrorHandling {
                 })
                 .onErrorReturn(999);
 
-        flux.subscribe(System.out::println);
+        fluxInteger.subscribe(System.out::println);
+
+        System.out.println("------------------------------------");
+
+        // example 3
+        // when you want to return a hardcoded value / simple computation
+
+        Mono.just(5)
+                .map(i -> i == 5 ? 5 / 0 : i) // intentional
+                .onErrorReturn(IllegalArgumentException.class, -1) // only in case of IllegalArgumentException
+                .onErrorReturn(ArithmeticException.class, -2) // only in case of ArithmeticException
+                .onErrorReturn(-3) // in case of any other error
+                .subscribe(Util.getSubscriber());
+
 
         System.out.println("************************************");
 
@@ -106,7 +177,7 @@ public class Part05ErrorHandling {
                 .onErrorContinue(new BiConsumer<Throwable, Object>() {
                     @Override
                     public void accept(Throwable error, Object value) {
-                        System.out.println("⚠️ Skipping value: " + value + " due to error: " + error.getMessage());
+                        System.out.println("Skipping value: " + value + " due to error: " + error.getMessage());
                     }
                 });
 
@@ -146,7 +217,6 @@ public class Part05ErrorHandling {
                 err -> System.err.println("Error: " + err),
                 () -> System.out.println("Completed")
         );
-
 
     }
 }

@@ -27,4 +27,5 @@ public class Part06ErrorHandlingResume {
     private static Flux<String> getPriceFromBackupService() {
         return Flux.just("₹199", "₹299", "₹399");
     }
+
 }
