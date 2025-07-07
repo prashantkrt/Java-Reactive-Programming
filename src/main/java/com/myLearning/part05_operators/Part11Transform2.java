@@ -15,9 +15,15 @@ public class Part11Transform2 {
     record PurchaseOrder(String productName, int price, int quantity){}
 
     public static void main(String[] args) {
+
+        //transform(...) takes a Function<Flux<T>, Publisher<R>>.
+        //Function.identity() just returns the input stream unchanged.
+        //isDebug ? addDebugger() : Function.identity() lets you conditionally plug in debugging behavior.
+        var isDebug = false;
+
         getCustomers()
-                .transform(addDebugger())
-                .subscribe();
+                .transform(isDebug == true ? addDebugger() : Function.identity())
+                .subscribe(System.out::println);
 
         getPurchaseOrders()
                 .transform(addDebugger())
