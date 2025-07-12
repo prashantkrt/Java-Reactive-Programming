@@ -23,7 +23,13 @@ public class Part02HotPublisher {
 
         // using share method to make the publisher hot
         // now the publisher will share the data stream, and now it won't be two separate streams
-        var movieFlux = movieStream().share();
+        // var movieFlux = movieStream().publish().refCount(1); // need at least one subscriber to start emitting items
+        // share => publish().refCount(1)
+        // It needs 1 min subscriber to emit data.
+        // It stops when there is 0 subscriber.
+        // Re-subscription - It starts again where there is a new subscriber.
+        // To have min 2 subscribers, use publish().refCount(2);
+        var movieFlux = movieStream().share(); // same as .publish().refCount(1);
 
         try {
             logger.info("Waiting for 2 seconds");

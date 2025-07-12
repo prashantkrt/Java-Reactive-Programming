@@ -19,6 +19,14 @@ public class Util {
         return faker;
     }
 
+    public static void sleepSeconds(int i) {
+        try {
+            Thread.sleep(i * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
         var mono = Mono.just(1);
         mono.subscribe(getSubscriber());
@@ -26,4 +34,5 @@ public class Util {
         mono.subscribe(getSubscriber("subscriber2"));
         mono.subscribe(getSubscriber("subscriber3"));
     }
+
 }
