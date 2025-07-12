@@ -6,7 +6,9 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
-
+// remember
+// refCount(1) or share() =>  stops when there is no subscriber or 0
+// where as autoConnect(1) will not stop when there is no subscriber
 /*
  *   Hot Publisher
  * - Starts emitting items immediately, regardless of whether there are subscribers.
