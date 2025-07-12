@@ -32,7 +32,7 @@ public class Part05FluxCreateDownstreamEmitOnDemand {
             fluxSink.onRequest(n -> {
                 for (int i = 0; i < n &&  !fluxSink.isCancelled(); i++) {
                     var name = Util.faker().name().firstName();
-                    logger.info("Generated name : {}", name); // will be logged immediately even we have cancelled the subscription
+                    logger.info("Generated name : {}", name); // will be logged till we haven't cancelled the subscription
                     fluxSink.next(name);
                 }
             });
