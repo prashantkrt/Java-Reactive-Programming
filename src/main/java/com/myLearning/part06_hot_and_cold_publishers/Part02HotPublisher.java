@@ -47,7 +47,7 @@ public class Part02HotPublisher {
             throw new RuntimeException(e);
         }
 
-        // this will subscribe to the same data stream with 3 items can be anywhere between 1 - 10 movie scenes
+       // this will subscribe to the same data stream with 3 items can be anywhere between 1 - 10 movie scenes
        movieFlux.take(3).subscribe(Util.getSubscriber("Subscriber 2"));
 
         try {

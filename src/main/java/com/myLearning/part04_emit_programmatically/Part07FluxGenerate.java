@@ -27,7 +27,7 @@ public class Part07FluxGenerate {
 //        ).subscribe(System.out::println);
 
 
-        // Like we did earlier we were performing the loop on create method
+        // Like we did earlier, we were performing the loop on create method
         // but with generate the loop is performed on demand from the publisher itself
 
 //         lets say
@@ -37,7 +37,6 @@ public class Part07FluxGenerate {
 
         // Use AtomicInteger for a mutable, thread-safe state
         AtomicInteger number = new AtomicInteger(1);
-
         Flux.generate(synchronousSink -> {
                     if (number.get() <= 5) {
                         synchronousSink.next(number.get());
