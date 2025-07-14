@@ -21,6 +21,18 @@ class Utilities {
                 .doOnCancel(() -> log.info("cancelling {}", name))
                 .doOnComplete(() -> log.info("{} completed", name));
     }
+
+    public static <T> UnaryOperator<Flux<T>> fluxLogger2(String name) {
+        return new UnaryOperator<Flux<T>>() {
+            @Override
+            public Flux<T> apply(Flux<T> flux) {
+                return flux
+                        .doOnSubscribe(subscription -> log.info("subscribing to {}", name))
+                        .doOnCancel(() -> log.info("cancelling {}", name))
+                        .doOnComplete(() -> log.info("{} completed", name));
+            }
+        };
+    }
 }
 
 
