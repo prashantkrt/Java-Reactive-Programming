@@ -9,9 +9,9 @@ import java.time.Duration;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-public class Part07Merge {
+public class Part07MergeWith {
 
-    private static final Logger logger = LoggerFactory.getLogger(Part07Merge.class);
+    private static final Logger logger = LoggerFactory.getLogger(Part07MergeWith.class);
 
     public static void main(String[] args) {
         demo2();
