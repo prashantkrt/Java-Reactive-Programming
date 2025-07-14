@@ -20,6 +20,7 @@ public class Part11Flatmap {
             2. order service
             3. payment service
          */
+
         Flux<User> users = UserService.getAllUsers();
         System.out.println(users);
 
@@ -37,14 +38,13 @@ public class Part11Flatmap {
             3. payment service
          */
 
-
         String username = "John";
         Mono<Integer> userFlux = UserService.getUserId(username);
 
         // When you have Mono.flatMap(), it expects Mono → Mono.
-        //But we have Mono → Flux so you should use flatMapMany().
+        // But we have Mono → Flux so you should use flatMapMany().
 
-        //flatMapMany because Mono → Flux
+        // flatMapMany because Mono → Flux
         Flux<Order> order = userFlux.flatMapMany(userId -> OrderService.getUserOrders(userId));
         order.subscribe(i->System.out.println("Example 2: "+i));
 
