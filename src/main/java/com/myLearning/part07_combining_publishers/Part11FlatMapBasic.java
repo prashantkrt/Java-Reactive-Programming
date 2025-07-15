@@ -9,10 +9,10 @@ public class Part11FlatMapBasic {
 
     public static void main(String[] args) {
 
-//        monoToMono().subscribe(System.out::println);
-//        fluxToFlux().subscribe(System.out::println);
-//        monoToFlux().subscribe(System.out::println);
-        fluxToMono().subscribe(System.out::println);
+//        monoToMono().subscribe(System.out::println);  // The transformed number is: 10
+//        fluxToFlux().subscribe(System.out::println);  // 2 4 6 8
+//        monoToFlux().subscribe(System.out::println);  // Hello Hello World Hello Reactor
+//        fluxToMono().subscribe(System.out::println); // HELLO WORLD REACTOR
 
     }
 

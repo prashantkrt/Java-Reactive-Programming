@@ -8,7 +8,7 @@ import com.myLearning.part07_combining_publishers.common.Util;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class Part11Flatmap {
+public class Part12Flatmap {
 
     public static void main(String[] args) {
 
