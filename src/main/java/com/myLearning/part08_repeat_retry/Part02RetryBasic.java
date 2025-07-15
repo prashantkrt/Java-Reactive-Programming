@@ -2,8 +2,16 @@ package com.myLearning.part08_repeat_retry;
 
 import reactor.core.publisher.Flux;
 
+/*
+ retry operator simply resubscribes when it sees error signal.
+*/
 
 //retry() is for error recovery cycles.
+
+//retry() Infinite retry ( dangerous)
+//retry(long n)	Retry n times after error
+//retryBackoff(n, Duration)	Retry with backoff delay between retries
+//retryWhen()	Fully custom retry logic (delay, max attempts, etc.)
 
 /*
 [Source Flux/Mono]
@@ -23,7 +31,7 @@ import reactor.core.publisher.Flux;
      v
 [Repeat until successful OR retry limit exceeded]
  */
-public class Part02Retry {
+public class Part02RetryBasic {
     public static void main(String[] args) {
         Flux<Integer> flux = Flux.range(1, 3)
                 .map(i -> {
