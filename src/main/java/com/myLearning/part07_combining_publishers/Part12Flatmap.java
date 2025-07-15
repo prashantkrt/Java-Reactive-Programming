@@ -44,6 +44,7 @@ public class Part12Flatmap {
         // When you have Mono.flatMap(), it expects Mono → Mono.
         // But we have Mono → Flux so you should use flatMapMany().
 
+        // Mono is supposed to be 1 item - what if the flatMap returns multiple items! then we have to use flatMapMany
         // flatMapMany because Mono → Flux
         Flux<Order> order = userFlux.flatMapMany(userId -> OrderService.getUserOrders(userId));
         order.subscribe(i->System.out.println("Example 2: "+i));
