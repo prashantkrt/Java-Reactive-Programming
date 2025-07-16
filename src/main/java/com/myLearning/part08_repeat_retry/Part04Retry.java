@@ -9,7 +9,7 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//retry() Infinite retry ( dangerous)
+//retry() Infinite retry (dangerous)
 //retry(long n)	Retry n times after error
 //retryWhen()	Fully custom retry logic (delay, max attempts, etc.)
 // =>  retryWhen(Function<Flux<Throwable>, Publisher<?>>
@@ -20,12 +20,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 //Retry.indefinitely() =>	Retry forever
 //Retry.max(n) =>	Retry n times (no delay)
 
+// remember => Old way (using .retryWhen(errors -> errors.delayElements().take())) still works but is discouraged
+// use this way .retryWhen(Retry.fixedDelay(3, Duration.ofSeconds(1))) or .retryWhen(Retry.backoff(3, Duration.ofSeconds(1)))
+
 public class Part04Retry {
 
     private static final Logger log = LoggerFactory.getLogger(Part04Retry.class);
 
     public static void main(String[] args) {
-        demo2();
+        demo4();
         Util.sleepSeconds(10);
     }
 
@@ -44,7 +47,7 @@ public class Part04Retry {
     }
 
 
-    //  //Retry with Fixed Delay
+    //  Retry with Fixed Delay
     private static void demo3() {
         getCountryName()
                 .retryWhen(
@@ -61,6 +64,15 @@ public class Part04Retry {
                                 })
                 )
                 .subscribe(Util.getSubscriber("Demo 3 Subscriber"));
+    }
+
+
+    private static void demo4() {
+        getCountryName().retryWhen(Retry.fixedDelay(2, Duration.ofSeconds(1))
+                                .filter(ex -> RuntimeException.class.equals(ex.getClass()))
+                                .onRetryExhaustedThrow((spec, signal) -> signal.failure())
+                                .doBeforeRetry(rs -> log.info("retrying {}", rs.failure().getMessage()))) // will print before retry => retrying oops
+                                .subscribe(Util.getSubscriber("Demo 4 Subscriber"));
     }
 
     private static Mono<String> getCountryName() {
