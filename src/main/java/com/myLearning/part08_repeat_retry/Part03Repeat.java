@@ -53,7 +53,7 @@ public class Part03Repeat {
     // repeatWhen() allows you to control when and how many times to repeat by using a signal (a Flux).
     private static void demo4() {
         getCountryName()
-                .repeatWhen(flux -> flux.delayElements(Duration.ofSeconds(2)).take(2)) //// repeat twice, with delay
+                .repeatWhen(flux -> flux.delayElements(Duration.ofSeconds(2)).take(2)) // repeat twice, with delay
                 .subscribe(Util.getSubscriber("Demo 4 Subscriber"));
     }
 
