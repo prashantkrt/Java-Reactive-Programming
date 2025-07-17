@@ -24,6 +24,12 @@ package com.myLearning.part09_sinks;
 | Sinks.many().multicast()   | Multi-values, many subscribers              | [ Many subscribers, no replay, subscribers get data from subscribe point ]       |
 | Sinks.many().replay()      | Multi-values, many subscribers, with replay | [ Many subscribers, with replay of previous messages to late joiners ]           |
 
+
+| Method         |  Where You Use              |    Purpose                          |
+| ---------------| ----------------------------| ------------------------------------|
+| tryEmitNext()  | Sinks.Many (Flux-style)     |   Push multiple values into stream  |
+| tryEmitValue() | Sinks.One (Mono-style)      |   Push a single value** into stream |
+
 */
 
 import reactor.core.publisher.Mono;
