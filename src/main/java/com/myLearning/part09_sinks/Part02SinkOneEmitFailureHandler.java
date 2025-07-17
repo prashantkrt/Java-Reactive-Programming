@@ -54,7 +54,5 @@ public class Part02SinkOneEmitFailureHandler {
         //FAIL_OVERFLOW	       Buffer is full (for unicast/multicast)
         //FAIL_NON_SERIALIZED  Concurrent emissions from multiple threads
 
-
-
     }
 }
