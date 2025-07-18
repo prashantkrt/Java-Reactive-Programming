@@ -33,6 +33,7 @@ public class Part01MonoTest {
                 .expectNext("product-1")//Expect the next emitted item to be "product-1". You declare expectation → Mono must emit this value. If not, the test will fail.
                 .expectComplete() //Expect the Mono to complete without error. You expect the stream to finish properly (no errors, no extra items).
                 .verify(); // This is like pressing the “Play” button. It triggers the subscription, starts consuming events, and validates your expectations. Start the flow, actually run and verify everything
+        // verify() is subscribing the publisher. this triggers everything
     }
 
 }
