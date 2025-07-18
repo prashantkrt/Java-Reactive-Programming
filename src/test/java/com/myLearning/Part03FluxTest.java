@@ -37,3 +37,9 @@ public class Part03FluxTest {
                 .verify();
     }
 }
+
+// we can also use
+// verifyError() => expectError().verify();
+// verifyError(RuntimeException.class) => expectError(RuntimeException.class).verify();
+// verifyComplete() => expectComplete().verify();
+

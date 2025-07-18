@@ -54,6 +54,7 @@ public class Part04RangeTest {
     }
 
 
+    // producer 2 test
     @Test
     public void rangeTest4() {
         StepVerifier.create(getRandomItems())
@@ -67,3 +68,8 @@ public class Part04RangeTest {
     }
 
 }
+
+// we can also use
+// verifyError() => expectError().verify();
+// verifyError(RuntimeException.class) => expectError(RuntimeException.class).verify();
+// verifyComplete() => expectComplete().verify();
