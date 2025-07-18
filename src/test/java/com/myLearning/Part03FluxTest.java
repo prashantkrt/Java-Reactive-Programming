@@ -28,4 +28,12 @@ public class Part03FluxTest {
                 .expectComplete()
                 .verify();
     }
+
+    @Test
+    public void fluxTest3() {
+        StepVerifier.create(getItems(), 1)//  it will be requesting for just 1 item
+                .expectNext(1)
+                .thenCancel()
+                .verify();
+    }
 }
