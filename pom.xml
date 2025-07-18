@@ -46,13 +46,17 @@
       <artifactId>javafaker</artifactId>
       <version>${faker.version}</version>
     </dependency>
+
     <!-- test dependencies -->
+
+    <!-- JUnit Jupiter API -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
+      <artifactId>junit-jupiter</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
     <!-- step-verifier -->
     <dependency>
       <groupId>io.projectreactor</groupId>
