@@ -48,7 +48,7 @@ public class Part07DirectBestEffort {
         // Multicast Sink only buffers for slow subscribers.
         // Subscriber 1 & 2 keep up =  no backpressure.
         // Subscriber 3 is delayed = messages get buffered up to 16 messages → after that → emits FAIL_OVERFLOW.
-        flux.delayElements(Duration.ofMillis(100)).subscribe(Util.getSubscriber("Subscriber 2"));
+        flux.delayElements(Duration.ofMillis(100)).subscribe(Util.getSubscriber("Subscriber 3"));
 
         for (int i = 1; i <= 100 ; i++) {
             var result = sink.tryEmitNext(i);
@@ -59,6 +59,9 @@ public class Part07DirectBestEffort {
 
     /*
         directBestEffort - focus on the fast subscriber and ignore the slow subscriber
+        directBestEffort() → emission is fast and non-blocking, but:
+        If subscribers can’t keep up or there are no subscribers, values may be dropped.
+        No buffering. It tries to deliver immediately to whoever is listening.
      */
     private static void demo2(){
 
@@ -67,9 +70,9 @@ public class Part07DirectBestEffort {
         // handle through which we would push items
         // onBackPressureBuffer - bounded queue
 
-        //Slow Subscriber Drops items when subscriber is slow
+        // Slow Subscriber Drops items when subscriber is slow
         // No guarantee that all subscribers get all messages for slower subscribers
-        var sink = Sinks.many().multicast().directBestEffort(); //Drops immediately, no buffering, focuses on fastest delivery
+        var sink = Sinks.many().multicast().directBestEffort(); // Drops immediately, no buffering,focuses on fastest delivery
 
 
         // handle through which subscribers will receive items
@@ -78,8 +81,8 @@ public class Part07DirectBestEffort {
         flux.subscribe(Util.getSubscriber("Subscriber 1"));
         // flux.delayElements(Duration.ofMillis(200)).subscribe(Util.getSubscriber("Subscriber 2"));
 
-        // if we think sub 2 is slow put the backpressure so that it won't loose the data
-        // it will take it from backpressue if its ready
+        // if we think sub 2 is slow put the backpressure so that it won't lose the data,
+        // it will take it from backpressure if it's ready
         flux.onBackpressureBuffer().delayElements(Duration.ofMillis(200)).subscribe(Util.getSubscriber("Subscriber 2"));
 
         for (int i = 1; i <= 100 ; i++) {

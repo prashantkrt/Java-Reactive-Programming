@@ -3,7 +3,6 @@ package com.myLearning.part09_sinks;
 import com.myLearning.part07_combining_publishers.common.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.SignalType;
 import reactor.core.publisher.Sinks;
 
 import java.util.ArrayList;
@@ -79,5 +78,43 @@ public class Part05SinkThreadSafety {
         logger.info("list size is : {}", list.size()); // list size is : 1000
     }
 
-
 }
+
+//Sinks.EmitResult possible values
+
+//OK
+//Emission succeeded.
+//No need to retry.
+
+//FAIL_ZERO_SUBSCRIBER
+//There are no subscribers listening to the sink.
+//Value is dropped (unless you have a replay sink that caches).
+
+//FAIL_OVERFLOW
+//Sink has backpressure / buffer full.
+//Could happen with multicast().onBackpressureBuffer(n) if buffer is full.
+//Usually indicates you can retry later.
+
+//FAIL_TERMINATED
+//Sink has been completed or errored.
+//Value cannot be emitted, will be dropped.
+
+//FAIL_CANCELLED
+//Sink has been cancelled by subscriber.
+//Value will be dropped.
+
+//FAIL_NON_SERIALIZED
+//Concurrent emission into a sink that only supports serialized emissions.
+//Returning true in failure handler → retry emission.
+
+
+/*
+        | EmitResult             | Meaning                          |
+        | ---------------------- | -------------------------------- |
+        |  OK                    | Success                          |
+        |  FAIL_ZERO_SUBSCRIBER  | No subscriber                    |
+        |  FAIL_OVERFLOW         | Buffer full / backpressure       |
+        |  FAIL_TERMINATED       | Sink completed / errored         |
+        |  FAIL_CANCELLED        | Sink cancelled                   |
+        |  FAIL_NON_SERIALIZED   | Concurrent emission, needs retry |
+*/
